@@ -19,21 +19,18 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@RequestMapping("/")
 public class UsersController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public void setUserService(UserService userService){
+    public UsersController(UserService userService, RoleService roleService) {
         this.userService = userService;
-    }
-
-    private RoleService roleService;
-
-    @Autowired
-    public void setRoleService(RoleService roleService){
         this.roleService = roleService;
     }
+
 
     @GetMapping("admin/users")
     public String allUsers(Model model){
@@ -68,7 +65,6 @@ public class UsersController {
 
     @GetMapping("/admin/users/{id}/edit")
     public String editPage(Model model, @PathVariable("id") long id){
-        //User user = userService.getById(id);
         model.addAttribute("allRoles", roleService.listRoles());
         model.addAttribute("user", userService.getById(id));
         return "admin/edit";
@@ -91,17 +87,6 @@ public class UsersController {
         return "redirect:/admin/users";
     }
 
-
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
-        List<String> messages = new ArrayList<>();
-        messages.add("Hello!");
-        messages.add("I'm Spring MVC-SECURITY application");
-        messages.add("5.2.0 version by sep'19 ");
-        model.addAttribute("messages", messages);
-        return "hello";
-    }
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
         return "login";
@@ -112,7 +97,6 @@ public class UsersController {
     public String dashboardPageList(Model model, @AuthenticationPrincipal UserDetails currentUser ) {
         User user = (User) userService.findUserByUsername(currentUser.getUsername());
         model.addAttribute("user", user);
-
         return "user";
     }
 }

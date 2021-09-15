@@ -41,6 +41,5 @@ public class UserDAOImpl implements UserDAO {
                 .createQuery("from User where username = :username")
                 .setParameter("username", username)
                 .getSingleResult();
-//        return entityManager.find(User.class, username);
     }
 }

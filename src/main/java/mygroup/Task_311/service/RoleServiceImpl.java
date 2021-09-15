@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private RoleDAO roleDAO;
+    private final RoleDAO roleDAO;
 
     @Autowired
-    public void setUserDAO(RoleDAO roleDAO){
+    public RoleServiceImpl(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
 
